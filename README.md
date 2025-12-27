@@ -27,7 +27,7 @@ OUTPUT
 ![alt text](image-4.png)
 
 Workflows / go here https://github.com/serverless/github-action
-`
+```
 name: Deploy master branch
 
 on:
@@ -57,7 +57,7 @@ jobs:
         // or if using AWS credentials directly
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-`
+```
 # Serverless Framework Node Scheduled Cron on AWS
 
 This template demonstrates how to develop and deploy a simple cron-like service running on AWS Lambda using the Serverless Framework.
