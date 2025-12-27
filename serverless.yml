@@ -1,0 +1,13 @@
+service: basic-serverless-lambda
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: ap-southeast-1
+
+functions:
+  rateHandler:
+    handler: src/handler.generateRandomName
+    events:
+      - schedule: rate(1 minute)
