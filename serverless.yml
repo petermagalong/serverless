@@ -63,7 +63,7 @@ functions:
           cors: true
 
 plugins:
-  - serverless-offline
+  # - serverless-offline
   - serverless-dynamodb-local
 
 custom:
