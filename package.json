@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Basic Serverless Lambda with CRUD endpoints",
   "scripts": {
-    "start": "serverless offline",
+    "start": "npx serverless offline",
     "deploy": "serverless deploy"
   },
   "dependencies": {

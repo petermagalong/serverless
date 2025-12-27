@@ -3,7 +3,7 @@ service: basic-serverless-lambda
 provider:
   name: aws
   runtime: nodejs20.x
-  stage: dev
+  stage: master
   region: ap-southeast-1
   environment:
     ITEMS_TABLE: ${self:service}-items-${opt:stage, 'dev'}
