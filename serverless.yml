@@ -64,7 +64,7 @@ functions:
 
 plugins:
   # - serverless-offline
-  - serverless-dynamodb-local
+  # - serverless-dynamodb-local
 
 custom:
   dynamodb:
