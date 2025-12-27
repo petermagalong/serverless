@@ -7,7 +7,42 @@ provider:
   region: ap-southeast-1
 
 functions:
-  rateHandler:
-    handler: src/handler.generateRandomName
+  createItem:
+    handler: src/handler.createItem
     events:
-      - schedule: rate(1 minute)
+      - http:
+          path: items
+          method: post
+          cors: true
+
+  listItems:
+    handler: src/handler.listItems
+    events:
+      - http:
+          path: items
+          method: get
+          cors: true
+
+  getItem:
+    handler: src/handler.getItem
+    events:
+      - http:
+          path: items/{id}
+          method: get
+          cors: true
+
+  updateItem:
+    handler: src/handler.updateItem
+    events:
+      - http:
+          path: items/{id}
+          method: put
+          cors: true
+
+  deleteItem:
+    handler: src/handler.deleteItem
+    events:
+      - http:
+          path: items/{id}
+          method: delete
+          cors: true
