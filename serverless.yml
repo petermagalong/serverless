@@ -5,6 +5,21 @@ provider:
   runtime: nodejs20.x
   stage: dev
   region: ap-southeast-1
+  environment:
+    ITEMS_TABLE: ${self:service}-items-${opt:stage, 'dev'}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:Scan
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:service}-items-${opt:stage, 'dev'}
 
 functions:
   createItem:
@@ -46,3 +61,30 @@ functions:
           path: items/{id}
           method: delete
           cors: true
+
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
+
+custom:
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    stages:
+      - dev
+
+resources:
+  Resources:
+    ItemsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-items-${opt:stage, 'dev'}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST

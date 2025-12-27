@@ -1,10 +1,10 @@
-const store = {};
+const store = require('../store');
 
-const response = (statusCode, body) => ({
-  statusCode,
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(body),
-});
+const response = require('./utils/response');
+const ItemService = require('./services/itemService');
+
+// Dependency injection: service depends on abstract store interface
+const service = new ItemService(store);
 
 function makeId() {
   return Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
@@ -17,41 +17,42 @@ exports.createItem = async (event) => {
   } catch (err) {
     return response(400, { error: 'Invalid JSON' });
   }
-  const id = makeId();
-  const item = { id, ...data, createdAt: new Date().toISOString() };
-  store[id] = item;
-  console.log('Item created:', store);
+  const item = await service.createItem(data);
+  console.log('Item created:', item.id);
   return response(201, item);
 };
 
 exports.listItems = async () => {
-  const items = Object.values(store);
+  const items = await service.listItems();
   return response(200, items);
 };
 
 exports.getItem = async (event) => {
   const id = event.pathParameters && event.pathParameters.id;
-  if (!id || !store[id]) return response(404, { error: 'Item not found' });
-  return response(200, store[id]);
+  if (!id) return response(404, { error: 'Item not found' });
+  const item = await store.findById(id);
+  if (!item) return response(404, { error: 'Item not found' });
+  return response(200, item);
 };
 
 exports.updateItem = async (event) => {
   const id = event.pathParameters && event.pathParameters.id;
-  if (!id || !store[id]) return response(404, { error: 'Item not found' });
+  if (!id) return response(404, { error: 'Item not found' });
   let data;
   try {
     data = event.body ? JSON.parse(event.body) : {};
   } catch (err) {
     return response(400, { error: 'Invalid JSON' });
   }
-  const updated = { ...store[id], ...data, updatedAt: new Date().toISOString() };
-  store[id] = updated;
+  const updated = await service.updateItem(id, data);
+  if (!updated) return response(404, { error: 'Item not found' });
   return response(200, updated);
 };
 
 exports.deleteItem = async (event) => {
   const id = event.pathParameters && event.pathParameters.id;
-  if (!id || !store[id]) return response(404, { error: 'Item not found' });
-  delete store[id];
+  if (!id) return response(404, { error: 'Item not found' });
+  const removed = await store.remove(id);
+  if (!removed) return response(404, { error: 'Item not found' });
   return response(200, { message: 'Item deleted' });
 };
