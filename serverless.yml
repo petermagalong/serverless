@@ -6,6 +6,9 @@ provider:
   stage: dev
   region: ap-southeast-1
 
+plugins:
+  - serverless-offline
+
 functions:
   createItem:
     handler: src/handler.createItem
@@ -44,5 +47,13 @@ functions:
     events:
       - http:
           path: items/{id}
+          method: delete
+          cors: true
+
+  deleteAllItems:
+    handler: src/handler.deleteAllItems
+    events:
+      - http:
+          path: items
           method: delete
           cors: true

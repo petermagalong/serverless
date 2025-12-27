@@ -1,0 +1,13 @@
+{
+  "name": "basic-serverless-lambda",
+  "version": "1.0.0",
+  "description": "Basic Serverless Lambda with CRUD endpoints",
+  "scripts": {
+    "start": "serverless offline",
+    "deploy": "serverless deploy"
+  },
+  "devDependencies": {
+    "serverless": "^4.29.0",
+    "serverless-offline": "^14.4.0"
+  }
+}
