@@ -10,7 +10,54 @@ authorLink: 'https://github.com/0dj0bz'
 authorName: 'Rob Abbott'
 authorAvatar: 'https://avatars3.githubusercontent.com/u/5679763?v=4&s=140'
 -->
+GUIDE : 
+ADD Secret in github 
+![alt text](image-3.png)
 
+Gateway
+![alt text](image-2.png)
+
+Lambda
+![alt text](image-1.png)
+
+Dynamo DB 
+![alt text](image.png)
+
+OUTPUT 
+![alt text](image-4.png)
+
+Workflows / go here https://github.com/serverless/github-action
+`
+name: Deploy master branch
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: serverless deploy
+      uses: serverless/github-action@v3.2
+      with:
+        args: deploy
+      env:
+        //this is commented SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+        // or if using AWS credentials directly
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+`
 # Serverless Framework Node Scheduled Cron on AWS
 
 This template demonstrates how to develop and deploy a simple cron-like service running on AWS Lambda using the Serverless Framework.
@@ -55,50 +102,3 @@ Now you can invoke the function as before, but this time the function will be ex
 
 When you are done developing, don't forget to run `serverless deploy` to deploy the function to the cloud.
 
-ADD Secret in github 
-![alt text](image-3.png)
-
-Gateway
-![alt text](image-2.png)
-
-Lambda
-![alt text](image-1.png)
-
-Dynamo DB 
-![alt text](image.png)
-
-OUTPUT 
-![alt text](image-4.png)
-
-Workflows
-`
-name: Deploy master branch
-
-on:
-  push:
-    branches:
-      - master
-
-jobs:
-  deploy:
-    name: deploy
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [22.x]
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: serverless deploy
-      uses: serverless/github-action@v3.2
-      with:
-        args: deploy
-      env:
-        # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-        # or if using AWS credentials directly
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-`
