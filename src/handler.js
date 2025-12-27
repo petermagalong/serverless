@@ -20,6 +20,7 @@ exports.createItem = async (event) => {
   const id = makeId();
   const item = { id, ...data, createdAt: new Date().toISOString() };
   store[id] = item;
+  console.log('Item created:', store);
   return response(201, item);
 };
 
