@@ -1,0 +1,16 @@
+{
+  "name": "basic-serverless-lambda",
+  "version": "1.0.0",
+  "description": "Basic Serverless Lambda with CRUD endpoints",
+  "scripts": {
+    "deploy": "serverless deploy"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.385.0",
+    "@aws-sdk/lib-dynamodb": "^3.385.0"
+  },
+  "devDependencies": {
+    "serverless": "^4.29.0",
+    "serverless-dynamodb-local": "^1.0.2"
+  }
+}
